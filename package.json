@@ -1,0 +1,20 @@
+{
+  "name": "print_spooler",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "GPLv3",
+  "dependencies": {
+    "alasql": "^0.2.6",
+    "commander": "^2.9.0",
+    "hapi": "^13.3.0",
+    "moment": "^2.13.0",
+    "sha256": "^0.2.0",
+    "shelljs": "^0.6.0"
+  }
+}
