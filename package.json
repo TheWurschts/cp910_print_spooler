@@ -11,9 +11,12 @@
   "license": "GPLv3",
   "dependencies": {
     "alasql": "^0.2.6",
+    "async": "^2.0.0-rc.3",
     "commander": "^2.9.0",
     "hapi": "^13.3.0",
     "moment": "^2.13.0",
+    "nedb": "^1.8.0",
+    "pushover-notifications": "^0.2.2",
     "sha256": "^0.2.0",
     "shelljs": "^0.6.0"
   }
