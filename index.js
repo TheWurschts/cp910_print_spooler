@@ -35,16 +35,22 @@ server.route({
   method: 'POST',
   path:'/setJob',
   handler: function (request, reply) {
-    // try{
-      let JSONObject = JSON.parse(request.payload);
+    try{
+      let JSONObject;
+      if(typeof request.payload !== 'object'){
+        JSONObject = JSON.parse(request.payload);
+      }else{
+        JSONObject = request.payload;
+      }
       let count = 1;
       if(JSONObject.count){
         count = JSONObject.count;
       }
       let shaArr = [];
+      // TODo check if file is present and is jpg
       for(var i=0;i<count;i++){
         let newsha = moment() + sha256(JSONObject.file + i)
-        let newObj = {"file":JSONObject.file+i, "time":moment().format('x'), "prio":i, "id":newsha, "finished":0};
+        let newObj = {"file":JSONObject.file, "time":moment().format('x'), "prio":i, "id":newsha, "finished":0};
         try{
           newObj.pErrorUser = JSONObject.perroruser;
           newObj.pErrorToken = JSONObject.perrortoken;
@@ -60,9 +66,9 @@ server.route({
         shaArr.push(newsha)
       }
       return reply({"success":true, "id":shaArr});
-    // }catch(e){
-    //   return reply({"success":false});
-    // }
+    }catch(e){
+      return reply({"success":false});
+    }
   }
 });
 server.route({
@@ -112,7 +118,7 @@ var removeIDFromDB = function(id, cb){
     cb = function(){};
   }
   currentJob = null;
-  db.update({ id: id }, { $set: { finished: 1, finishedtimestamp: moment().format(x) } },{}, cb);
+  db.update({ id: id }, { $set: { finished: 1, finishedtimestamp: moment().format('x') } },{}, cb);
 }
 
 var printIfAvailable = function(){
@@ -138,7 +144,7 @@ var printIfAvailable = function(){
           let state0TooLongFlip = false;
           let printerNotRespondingTimer = null;
 
-
+          console.log(cfg.selphyPath + ' -printer_mac "60:12:8B:A3:E9:D0" '+filename)
           let child = shell.exec(cfg.selphyPath + ' -printer_mac "60:12:8B:A3:E9:D0" '+filename, {async:true, silent:true});
           child.stdout.on('data', function(data) {
             var bla = filterEmptyVars(data.split("\n"));
