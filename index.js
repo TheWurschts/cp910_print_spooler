@@ -8,8 +8,9 @@ const alasql = require('alasql');
 const push = require('pushover-notifications');
 const Datastore = require('nedb');
 const Async = require('async');
+const Path = require('path');
 const cfg = require('./config.json');
-var db = new Datastore({ filename: 'data', autoload: true });
+var db = new Datastore({ filename: Path.join(__dirname,'data.db'), autoload: true });
 
 db.ensureIndex({ fieldName: 'id', unique: true }, function (err) {
 });

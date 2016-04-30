@@ -34,4 +34,4 @@ node_modules
 
 config.json
 test.js
-data
+data.db
