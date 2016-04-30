@@ -8,6 +8,7 @@ const alasql = require('alasql');
 const push = require('pushover-notifications');
 const Datastore = require('nedb');
 const Async = require('async');
+const cfg = require('./config.json');
 var db = new Datastore({ filename: 'data', autoload: true });
 
 db.ensureIndex({ fieldName: 'id', unique: true }, function (err) {
@@ -119,7 +120,7 @@ var printIfAvailable = function(){
           let printerNotRespondingTimer = null;
 
 
-          let child = shell.exec('/home/roman/bzr/selphy/selphy -printer_mac "60:12:8B:A3:E9:D0" '+filename, {async:true, silent:true});
+          let child = shell.exec(cfg.selphyPath + ' -printer_mac "60:12:8B:A3:E9:D0" '+filename, {async:true, silent:true});
           child.stdout.on('data', function(data) {
             var bla = filterEmptyVars(data.split("\n"));
 
