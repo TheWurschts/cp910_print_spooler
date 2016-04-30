@@ -77,6 +77,21 @@ server.route({
   }
 });
 
+server.route({
+  method: 'GET',
+  path:'/jobDelete/{id}',
+  handler: function (request, reply) {
+    let id = request.params.id;
+    removeIDFromDB(id, function(err, numRows){
+      if(!!numRows){
+        return reply({"finished":true});
+      }else{
+        return reply({"finished":false});
+      }
+    });
+  }
+});
+
 // Start the server
 server.start((err) => {
   if (err) {
@@ -91,9 +106,12 @@ var isIdInArray = function(id){
     return !!count;
   });
 }
-var removeIDFromDB = function(id){
+var removeIDFromDB = function(id, cb){
+  if(typeof cb !== 'function'){
+    cb = function(){};
+  }
   currentJob = null;
-  db.update({ id: id }, { $set: { finished: 1, finishedtimestamp: moment().format(x) } });
+  db.update({ id: id }, { $set: { finished: 1, finishedtimestamp: moment().format(x) } },{}, cb);
 }
 
 var printIfAvailable = function(){
