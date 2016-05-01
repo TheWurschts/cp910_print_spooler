@@ -9,6 +9,7 @@ const push = require('pushover-notifications');
 const Datastore = require('nedb');
 const Async = require('async');
 const Path = require('path');
+const fs = require('fs');
 const cfg = require('./config.json');
 var db = new Datastore({ filename: Path.join(__dirname,'data.db'), autoload: true });
 
@@ -48,6 +49,11 @@ server.route({
       }
       let shaArr = [];
       // TODo check if file is present and is jpg
+      try{
+        fs.statSync(JSONObject.file);
+      }catch(e){
+        return reply({"success":false, "message":"file not found"});
+      }
       for(var i=0;i<count;i++){
         let newsha = moment() + sha256(JSONObject.file + i)
         let newObj = {"file":JSONObject.file, "time":moment().format('x'), "prio":i, "id":newsha, "finished":0};
